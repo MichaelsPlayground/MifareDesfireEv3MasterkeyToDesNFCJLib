@@ -10,6 +10,7 @@
  */
 package nfcjlib.core;
 
+import android.nfc.TagLostException;
 import android.util.Log;
 
 import com.github.skjolber.desfire.ev1.model.DesfireApplicationId;
@@ -24,6 +25,7 @@ import com.github.skjolber.desfire.ev1.model.file.ValueDesfireFile;
 import com.github.skjolber.desfire.ev1.model.random.DefaultRandomSource;
 import com.github.skjolber.desfire.ev1.model.random.RandomSource;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -3130,5 +3132,96 @@ public class DESFireEV1 {
 		Log.d(TAG, de.androidcrypto.mifaredesfireev3examplesnfcjlib.Utils.printData("responseAPDU", responseAPDU));
 
 		return false;
+	}
+
+	byte[] errorCode;
+	String errorCodeReason = "";
+
+	public boolean proximityCheck() {
+		Log.d(TAG, "Run the Proximity Check");
+		String stepString = "phase 1: prepare the check";
+		final byte PREPARE_PROXIMITY_CHECK_COMMAND = (byte) 0xF0;
+		final byte RUN_PROXIMITY_CHECK_COMMAND = (byte) 0xF2;
+		final byte VERIFY_PROXIMITY_CHECK_COMMAND = (byte) 0xFD;
+
+		byte[] apdu;
+		byte[] response;
+		byte[] responseData;
+		try {
+			apdu = wrapMessage(PREPARE_PROXIMITY_CHECK_COMMAND, null);
+			//response = sendData(apdu);
+			response = transmit(apdu);
+		} catch (IOException e) {
+			Log.e(TAG, stepString + " transceive failed, IOException:\n" + e.getMessage());
+			log(stepString, "transceive failed: " + e.getMessage(), false);
+
+			return false;
+		}
+		// unauthenticated response: 010320009190
+		Log.d(TAG, de.androidcrypto.mifaredesfireev3examplesnfcjlib.Utils.printData("response", response));
+		responseData = Arrays.copyOfRange(response, 0, response.length - 2);
+
+		byte OTP = responseData[0];
+		byte[] pubRespTime = Arrays.copyOfRange(responseData, 1, 3);
+		byte PPS1;
+		if (OTP == (byte) 0x01) {
+			PPS1 = responseData[3];
+		} else {
+			PPS1 = -1;
+		}
+
+		// printing some data
+		// print("SC = %02X, OPT = %02X, pubRespTime = %02X %02X, PPS1 = %02X" %(SC, OPT, pubRespTime[0], pubRespTime[1], PPS1))
+		log(stepString, "OTP: " + de.androidcrypto.mifaredesfireev3examplesnfcjlib.Utils.byteToHex(OTP));
+		log(stepString, printData("pubRespTime", pubRespTime));
+		log(stepString, "PPS1: " + de.androidcrypto.mifaredesfireev3examplesnfcjlib.Utils.byteToHex(PPS1));
+
+		stepString = "phase 2: run the PC";
+		Log.d(TAG, stepString);
+		byte[] rndC = de.androidcrypto.mifaredesfireev3examplesnfcjlib.Utils.hexStringToByteArray("0001020304050607"); // 8 bytes, should be random
+		// we are running 1 round only
+		// see the 'proximity check code' how to run more than 1 round
+		try {
+			apdu = wrapMessage(RUN_PROXIMITY_CHECK_COMMAND, rndC);
+			response = transmit(apdu);
+		} catch (IOException e) {
+			Log.e(TAG, stepString + " transceive failed, IOException:\n" + e.getMessage());
+			log(stepString, "transceive failed: " + e.getMessage(), false);
+			return false;
+		}
+
+
+
+
+		return false;
+	}
+
+	private byte[] wrapMessage(byte command, byte[] parameters) throws IOException {
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		stream.write((byte) 0x90);
+		stream.write(command);
+		stream.write((byte) 0x00);
+		stream.write((byte) 0x00);
+		if (parameters != null) {
+			stream.write((byte) parameters.length);
+			stream.write(parameters);
+		}
+		stream.write((byte) 0x00);
+		return stream.toByteArray();
+	}
+
+
+
+	private void log(String methodName, String data) {
+		log(methodName, data, false);
+	}
+
+	private void log(String methodName, String data, boolean isMethodHeader) {
+		boolean printToLog = true;
+		if (printToLog) {
+			//logData += "method: " + methodName + "\n" + data + "\n";
+			//logData += "\n" + methodName + ":\n" + data + "\n\n";
+			Log.d(TAG, "method: " + methodName + ": " + data);
+		}
 	}
 }

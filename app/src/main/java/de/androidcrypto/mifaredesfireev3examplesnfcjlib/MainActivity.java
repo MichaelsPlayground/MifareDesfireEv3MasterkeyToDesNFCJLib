@@ -169,6 +169,12 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
     // change all keys from CHANGED to DEFAULT
     private Button changeAllKeysWithDefaultMasterKeyDC, changeAllKeysWithDefaultMasterKeyAC;
 
+    /**
+     * section for Proximity Check tasks
+     */
+
+    private Button setProximityKeys, runProximityCheck, getProximityKeyVersions;
+
     // constants
     private String lineSeparator = "----------";
     private final byte[] MASTER_APPLICATION_IDENTIFIER = new byte[3]; // '00 00 00'
@@ -400,6 +406,11 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
         changeAllKeysWithChangedMasterKeyD = findViewById(R.id.btnChangeKeysAllMasterChangedD);
         // change all application keys AES from Default to Changed with Changed Master Key
         changeAllKeysWithChangedMasterKeyA = findViewById(R.id.btnChangeKeysAllMasterChangedA);
+
+        // methods for proximity check
+        setProximityKeys = findViewById(R.id.btnProxSetKeys);
+        getProximityKeyVersions = findViewById(R.id.btnProxGetKeyVersions);
+        runProximityCheck = findViewById(R.id.btnProxRunCheck);
 
         //allLayoutsInvisible(); // default
 
@@ -3930,6 +3941,17 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
                     e.printStackTrace();
                     return;
                 }
+            }
+        });
+
+        runProximityCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clearOutputFields();
+                String logString = "runProximityCheck";
+                writeToUiAppend(output, logString);
+
+                boolean success = desfire.proximityCheck();
             }
         });
 
