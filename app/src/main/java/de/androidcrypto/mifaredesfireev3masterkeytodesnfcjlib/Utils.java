@@ -1,4 +1,4 @@
-package de.androidcrypto.mifaredesfireev3examplesnfcjlib;
+package de.androidcrypto.mifaredesfireev3masterkeytodesnfcjlib;
 
 import android.os.Build;
 

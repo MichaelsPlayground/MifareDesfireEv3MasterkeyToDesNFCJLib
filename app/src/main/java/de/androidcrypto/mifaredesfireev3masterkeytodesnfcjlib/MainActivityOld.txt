@@ -1,4 +1,4 @@
-package de.androidcrypto.mifaredesfireev3examplesnfcjlib;
+package de.androidcrypto.mifaredesfireev3masterkeytodesnfcjlib;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -61,12 +61,12 @@ import nfcjlib.core.util.CRC16;
 import nfcjlib.core.util.CRC32;
 import nfcjlib.core.util.TripleDES;
 
-public class MainActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
+public class MainActivityOld extends AppCompatActivity implements NfcAdapter.ReaderCallback {
 
-    private static final String TAG = MainActivity.class.getName();
+    private static final String TAG = MainActivityOld.class.getName();
 
     private com.google.android.material.textfield.TextInputEditText output, errorCode;
-    private com.google.android.material.textfield.TextInputLayout errorCodeLayout;
+    private TextInputLayout errorCodeLayout;
 
     /**
      * section for temporary actions
@@ -818,9 +818,9 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
                     }
                 };
                 //final String selectedFolderString = "You are going to format the PICC " + "\n\n" + "Do you want to proceed ?";
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivityOld.this);
 
-                LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+                LayoutInflater inflater = MainActivityOld.this.getLayoutInflater();
                 View dialogView = inflater.inflate(R.layout.application_key_settings, null);
                 builder.setView(dialogView);
 
@@ -940,7 +940,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
                 };
                 final String selectedFolderString = "You are going to format the PICC " + "\n\n" +
                         "Do you want to proceed ?";
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivityOld.this);
 
                 builder.setMessage(selectedFolderString).setPositiveButton(android.R.string.yes, dialogClickListener)
                         .setNegativeButton(android.R.string.no, dialogClickListener)
@@ -1245,7 +1245,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
                 final String selectedFolderString = "You are going to delete the application " +
                         Utils.bytesToHexNpe(selectedApplicationId) + "\n\n" +
                         "Do you want to proceed ?";
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivityOld.this);
                 builder.setMessage(selectedFolderString).setPositiveButton(android.R.string.yes, dialogClickListener)
                         .setNegativeButton(android.R.string.no, dialogClickListener)
                         .setTitle("DELETE an application")
@@ -1410,7 +1410,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
                 final String selectedFolderString = "You are going to delete the file " +
                         selectedFileId + "\n\n" +
                         "Do you want to proceed ?";
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivityOld.this);
                 builder.setMessage(selectedFolderString).setPositiveButton(android.R.string.yes, dialogClickListener)
                         .setNegativeButton(android.R.string.no, dialogClickListener)
                         .setTitle("DELETE a file")

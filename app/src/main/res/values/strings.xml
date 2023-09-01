@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">Mifare DESFire EV3 Examples NFCjLib</string>
+    <string name="app_name">Mifare DESFire EV3 Masterkey to DES NFCjLib</string>
+    <string name="header_main">Change the Master Application Key from AES to DES </string>
+    <string name="description_main">Changes the Master Application Key from (default) AES to (default) DES key.
+        A default key is just filled up with 0x00 values - a DES key is 8 bytes and an AES key 16 bytes long. \n\n
+        This happens IMMEDIATELY when a tag is tapped to the  NFC reader without  further confirmation !
+        The app will authenticate the Master Application with a default AES key.
+    </string>
+    <string name="warning_main">WARNING: The app will IMMEDIATELY run the key change when attached without any further confirmation !</string>
+    <string name="more_information_main">more</string>
 </resources>

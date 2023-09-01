@@ -1,4 +1,4 @@
-# Mifare DESFire EV1/2/3 Examples (DES keys) using NFCjLib
+# Mifare DESFire EV3 Masterkey to DES using NFCjLib
 
 This app is using the NFCjLib library from **Desfire Tools for Android** available on GitHub here:
 https://github.com/skjolber/desfire-tools-for-android.
@@ -6,7 +6,7 @@ https://github.com/skjolber/desfire-tools-for-android.
 It was written by Thomas Skjølberg ("skjolber") and this one is the best available source for accessing 
 NXP's Mifare DESFire tags. 
 
-If you are trying to get basic information's about the DESFire tag the first contact point is the  manufacturer's datasheet, available here:
+If you are trying to get basic information's about the DESFire tag the first contact point is the manufacturer's datasheet, available here:
 - DESFire EV1 MF3ICDX21_41_81_SDS: https://www.nxp.com/docs/en/data-sheet/MF3ICDX21_41_81_SDS.pdf
 - DESFire EV2 MF3DX2_MF3DHX2_SDS: https://www.nxp.com/docs/en/data-sheet/MF3DX2_MF3DHX2_SDS.pdf
 - DESFire EV3 MF3D(H)x3: https://www.nxp.com/docs/en/data-sheet/MF3DHx3_SDS.pdf
