@@ -136,7 +136,6 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
             } else {
                 writeToUiAppendBorderColor(stepString + " SUCCESS", COLOR_GREEN);
             }
-            //writeToUiAppend(output, stepString + " desfireApplicationKeySettings: " + desfireApplicationKeySettings.toString());
             writeToUiAppend(output, stepString + " maximum keys: " + desfireApplicationKeySettings.getMaxKeys());
             writeToUiAppend(output, stepString + " key type: " + desfireApplicationKeySettings.getType().toString());
             if (desfireApplicationKeySettings.getType() != DesfireKeyType.AES) {
