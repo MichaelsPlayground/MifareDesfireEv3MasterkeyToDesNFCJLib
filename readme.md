@@ -1,5 +1,22 @@
 # Mifare DESFire EV3 Masterkey to DES using NFCjLib
 
+## Purpsose of the app
+
+This app has a limited use case: it changes the Master Application Key ("MAK") from a default **AES key** to a default **DES key**.
+
+The default AES key is 16 bytes long and filled with 16 0x00 values, the default DES key is filled with 8 * 0x00 values.
+
+```plaintext
+default AES-Key: 00000000000000000000000000000000
+default DES-Key: 0000000000000000
+```
+
+The key is **changed immediately after tapping without any further confirmation** the tag to the NFC reader, so be careful if you 
+really want to change the key. The app is just checking that the "old" MAK is of type AES and then authenticates the Master 
+Application with the default AES key: If the authentication is success the key is changed.
+
+This app is useful to reset the tag to factory settings but the change depends on the master application settings: if the configuration 
+is frozen no change is possible.
 
 ## Library used for this app
 
@@ -40,17 +57,5 @@ This is a short overview about most of the DESFire EV1 commands and error codes.
 ## About this app: 
 It is developed using Android Studio version Giraffe | 2022.3.1 Patch 1 and is running on SDK 21 to 33 (Android 13) (tested on 
 Android 8 and 13 with real devices).  
-
-The only purpose of the app is to change the **Master Application Key** from a default AES key to a default DES key..
-
-The default AES key is 16 bytes long and filled with 16 0x00 values, the default DES key is filled with 8 * 0x00 values.
-
-```plaintext
-default AES-Key: 00000000000000000000000000000000
-default DES-Key: 0000000000000000
-```
-The key is **changed immediately after tapping** the tag to the NFC reader, so be careful if you realy want to change the key. 
-
-
 
 
