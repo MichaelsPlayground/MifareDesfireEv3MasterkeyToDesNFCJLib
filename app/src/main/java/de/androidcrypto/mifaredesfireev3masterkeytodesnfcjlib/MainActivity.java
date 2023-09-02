@@ -24,9 +24,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.skjolber.desfire.ev1.model.DesfireApplicationKeySettings;
 import com.github.skjolber.desfire.ev1.model.DesfireTag;
 import com.github.skjolber.desfire.ev1.model.command.DefaultIsoDepWrapper;
 import com.github.skjolber.desfire.ev1.model.command.IsoDepWrapper;
+import com.github.skjolber.desfire.ev1.model.key.DesfireKeyType;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
@@ -106,50 +108,99 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
         String logString = "Change Master Application Key to (default) DES";
         writeToUiAppend(output, logString);
 
-        // todo select Master Application
+        String stepString = "select the Master Application";
+        try {
+            boolean result = desfire.selectApplication(MASTER_APPLICATION_IDENTIFIER);
+            writeToUiAppend(output, stepString + " result: " + result);
 
+            if (!result) {
+                writeToUiAppendBorderColor(stepString + " FAILURE", COLOR_RED);
+                return;
+            } else {
+                writeToUiAppendBorderColor(stepString + " SUCCESS", COLOR_GREEN);
+            }
+        } catch (IOException e) {
+            writeToUiAppend(output, stepString + " Exception: " + e.getMessage());
+            return;
+        } catch (NullPointerException e) {
+            writeToUiAppend(output, stepString + "NP Exception: " + e.getMessage());
+            return;
+        }
 
+        stepString = "get the Master Application key settings";
+        try {
+            DesfireApplicationKeySettings desfireApplicationKeySettings = desfire.getKeySettings();
+            if (desfireApplicationKeySettings == null) {
+                writeToUiAppendBorderColor(stepString + " FAILURE", COLOR_RED);
+                return;
+            } else {
+                writeToUiAppendBorderColor(stepString + " SUCCESS", COLOR_GREEN);
+            }
+            //writeToUiAppend(output, stepString + " desfireApplicationKeySettings: " + desfireApplicationKeySettings.toString());
+            writeToUiAppend(output, stepString + " maximum keys: " + desfireApplicationKeySettings.getMaxKeys());
+            writeToUiAppend(output, stepString + " key type: " + desfireApplicationKeySettings.getType().toString());
+            if (desfireApplicationKeySettings.getType() != DesfireKeyType.AES) {
+                writeToUiAppendBorderColor(stepString + ": The Master Application Key is not of type AES, aborted", COLOR_RED);
+                return;
+            }
+
+        } catch (IOException e) {
+            writeToUiAppend(output, stepString + " Exception: " + e.getMessage());
+            return;
+        } catch (NullPointerException e) {
+            writeToUiAppend(output, stepString + "NP Exception: " + e.getMessage());
+            return;
+        }
+
+        stepString = "authenticate the Master Application";
         try {
             boolean result = desfire.authenticate(MASTER_APPLICATION_KEY_AES_DEFAULT, MASTER_APPLICATION_KEY_NUMBER, KeyType.AES);
-            writeToUiAppend(output, "authenticate the Master Application result: " + result);
+            writeToUiAppend(output, stepString + " result: " + result);
 
             if (!result) {
-                writeToUiAppendBorderColor("authenticate the application FAILURE", COLOR_RED);
+                writeToUiAppendBorderColor(stepString + " FAILURE", COLOR_RED);
                 return;
             } else {
-                writeToUiAppendBorderColor("authenticate the application SUCCESS", COLOR_GREEN);
+                writeToUiAppendBorderColor(stepString + " SUCCESS", COLOR_GREEN);
             }
         } catch (IOException e) {
-            //throw new RuntimeException(e);
-            writeToUiAppend(output, "Exception on authenticate the Master Application: " + e.getMessage());
+            writeToUiAppend(output, stepString + " Exception: " + e.getMessage());
+            return;
         } catch (NullPointerException e) {
-            writeToUiAppend(output, "NP Exception on authenticate the Master Application: " + e.getMessage());
+            writeToUiAppend(output, stepString + "NP Exception: " + e.getMessage());
+            return;
         }
 
+        stepString = "change the Master Application key from AES to DES (default)";
         try {
-            //boolean result = desfire.changeKeyWithoutValidation(VC_CONFIG_KEY_NUMBER, (byte) 0, KeyType.AES, VC_CONFIG_KEY, oldKey, skey);
             boolean result = desfire.changeKey(MASTER_APPLICATION_KEY_NUMBER, (byte) 0, KeyType.DES, MASTER_APPLICATION_KEY_DES_DEFAULT, MASTER_APPLICATION_KEY_AES_DEFAULT);
-
+            writeToUiAppend(output, stepString + " result: " + result);
             if (!result) {
-                writeToUiAppendBorderColor("set MasterApplicationKey to DES FAILURE", COLOR_RED);
+                writeToUiAppendBorderColor(stepString + " FAILURE", COLOR_RED);
                 return;
             } else {
-                writeToUiAppendBorderColor("set MasterApplicationKey to DES SUCCESS", COLOR_GREEN);
+                writeToUiAppendBorderColor(stepString + " SUCCESS", COLOR_GREEN);
             }
-            vibrateShort();
         } catch (IOException e) {
-            //throw new RuntimeException(e);
-            writeToUiAppend(output, "Exception on set MasterApplicationKey to DES: " + e.getMessage());
+            writeToUiAppend(output, stepString + " Exception: " + e.getMessage());
+            return;
+        } catch (NullPointerException e) {
+            writeToUiAppend(output, stepString + "NP Exception: " + e.getMessage());
+            return;
         }
+        vibrateShort();
     }
 
     /**
      * section for NFC handling
      */
 
-    // This method is run in another thread when a card is discovered
-    // !!!! This method cannot cannot direct interact with the UI Thread
-    // Use `runOnUiThread` method to change the UI from this method
+    /**
+     * This method is running in another thread when a card is discovered
+     * ! This method cannot cannot direct interact with the UI Thread !
+     * Use `runOnUiThread` method to change the UI from this method
+     */
+
     @Override
     public void onTagDiscovered(Tag tag) {
 
