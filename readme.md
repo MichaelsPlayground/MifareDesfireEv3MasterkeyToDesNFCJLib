@@ -1,6 +1,6 @@
 # Mifare DESFire EV3 Masterkey to DES using NFCjLib
 
-## Purpsose of the app
+## Purpose of the app
 
 This app has a limited use case: it changes the Master Application Key ("MAK") from a default **AES key** to a default **DES key**.
 
