@@ -17,7 +17,7 @@ libraries with own licenses:
 
 ## License of this app
 
-This app is unser [Apache 2.0 license](./license)
+This app is under [Apache 2.0 license](license.md)
 
 ## Background informtion
 
