@@ -1,10 +1,25 @@
 # Mifare DESFire EV3 Masterkey to DES using NFCjLib
 
+
+## Library used for this app
+
 This app is using the NFCjLib library from **Desfire Tools for Android** available on GitHub here:
 https://github.com/skjolber/desfire-tools-for-android.
 
 It was written by Thomas Skjølberg ("skjolber") and this one is the best available source for accessing 
 NXP's Mifare DESFire tags. 
+
+About the license situation: The library itself has no dedicated license information but the library is a combination of 2 sub 
+libraries with own licenses:
+- nfcjlib - [Modified BSD License (3-clause BSD)](https://github.com/skjolber/desfire-tools-for-android/blob/master/nfcjlib/LICENSE)
+- libfreefare - [LGPL 3.0 with classpath exception](https://github.com/skjolber/desfire-tools-for-android/blob/master/libfreefare/LICENSE)
+- everything else - [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+
+## License of this app
+
+This app is unser [Apache 2.0 license]()
+
+## Background informtion
 
 If you are trying to get basic information's about the DESFire tag the first contact point is the manufacturer's datasheet, available here:
 - DESFire EV1 MF3ICDX21_41_81_SDS: https://www.nxp.com/docs/en/data-sheet/MF3ICDX21_41_81_SDS.pdf
