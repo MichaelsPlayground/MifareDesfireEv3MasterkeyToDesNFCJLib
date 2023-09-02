@@ -45,11 +45,8 @@ If you are trying to get basic information's about the DESFire tag the first con
 - DESFire EV3 Quick start guide: https://www.nxp.com/docs/en/application-note/AN12753.pdf
 - DESFire EV3 feature and functionality comparison to other MIFARE DESFire products: https://www.nxp.com/docs/en/application-note/AN12752.pdf
 
-Unfortunately the 3 main datasheets are shortened by the manufacturer and the full datasheets are available under **Non disclosure agreements (NDA)** only - 
-the agreement is not available for private persons.
-
-So the only chance is to use the **datasheet for the first version of DESFire tags ("D40")** using this link:
-https://neteril.org/files/M075031_desfire.pdf.
+Unfortunately the 3 main datasheets are shortened by the manufacturer and the full datasheets are available under **Non disclosure agreements (NDA)** only. 
+As I'm using a "ready to use" library no NDA breach was done.
 
 Another fine piece of information is the **NXP MIFARE DESFire EV1 Protocol** available here: https://github.com/revk/DESFireAES/blob/master/DESFire.pdf. 
 This is a short overview about most of the DESFire EV1 commands and error codes.
